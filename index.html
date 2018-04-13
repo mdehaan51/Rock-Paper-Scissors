@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<body>
+	<div id = "startScreen">
+	<h1> Rock, Paper, Scissors!</h1>
+	<p> Are you ready?? Select your move! </p>
+	<p> Type Rock, Paper, or Scissors Below! </p>
+	<input id = "selectionBox" type = "text">
+	<button onclick = "playerSelection();computerPlay();declareWinner()">Submit!</button>
+	<div>
+	<span>Computer Score:</span>
+	<span id = "computerScore">0</span>
+	</div>
+	<div>
+		<span>Player Score:</span>
+		<span id = "playerScore">0</span>
+	</div>
+	<div>
+		<span>Draws:</span>
+		<span id = "draws">0</span>
+	</div>
+	<div>This game is played in the Console, so to see results, press F12 and go to the console Tab!</div>
+
+
+</div>
+
+
+<script>
+	var computerTurn = '';
+	var playerTurn = '';
+	var computerCount = '';
+	var playerCount = '';
+	var drawCount = '';
+	
+	function computerPlay(){
+		let turn = Math.floor(Math.random()*9);
+		switch (true){
+			case turn <= 2:
+			computerTurn = "rock";
+			console.log("Computer Picked Rock!");
+			break;
+			case turn <= 6:
+			computerTurn = "paper"
+			console.log("Computer Picked Paper!");
+			break;
+			case turn <= 9:
+			computerTurn = "scissors"
+			console.log("Computer Picked Scissors!");
+			break;
+		}
+	}
+	function playerSelection(){
+		let val = document.getElementById("selectionBox").value;
+		playerTurn = val.toLowerCase();
+		console.log("You Picked " + val);
+	}
+	function declareWinner(){
+		switch(true){
+			case computerTurn == playerTurn:
+			console.log("It's a Draw!");
+			drawCount++;
+			document.getElementById("draws").innerHTML = drawCount;
+			break;
+			case computerTurn == "rock" && playerTurn == "scissors":
+			console.log("You lose!");
+			computerCount++;
+			document.getElementById("computerScore").innerHTML = computerCount;
+			break;
+			case computerTurn == "rock" && playerTurn == "paper":
+			console.log("You win!");
+			playerCount++;
+			document.getElementById("playerScore").innerHTML = playerCount;
+			break;
+			case computerTurn == "paper" && playerTurn == "rock":
+			console.log("You lose!");
+			computerCount++;
+			document.getElementById("computerScore").innerHTML = computerCount;
+			break;
+			case computerTurn == "paper" && playerTurn == "scissors":
+			console.log("You win!");
+			playerCount++;
+			document.getElementById("playerScore").innerHTML = playerCount;
+			break;
+			case computerTurn == "scissors" && playerTurn == "paper":
+			console.log("You lose!");
+			computerCount++;
+			document.getElementById("computerScore").innerHTML = computerCount;
+			break;
+			case computerTurn == "scissors" && playerTurn == "rock":
+			console.log("You win!");
+			playerCount++;
+			document.getElementById("playerScore").innerHTML = playerCount;
+			break;
+		}
+	}
+</script>
