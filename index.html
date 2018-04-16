@@ -1,96 +1,238 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+<head>
+  <title>Bootstrap Example</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
 <body>
-	<div id = "startScreen">
-	<h1> Rock, Paper, Scissors!</h1>
-	<p> Are you ready?? Select your move! </p>
-	<p> Type Rock, Paper, or Scissors Below! </p>
-	<input id = "selectionBox" type = "text">
-	<button onclick = "playerSelection();computerPlay();declareWinner()">Submit!</button>
-	<div>
-	<span>Computer Score:</span>
-	<span id = "computerScore">0</span>
+	<div id = "startScreen" class = "container">
+		<div class = "row">
+			<div class = "col-xs-12">
+				<h1> Rock, Paper, Scissors!</h1>
+			</div>
+		</div>
+		<div class = "row">
+			<div class = "col-xs-12">
+				<p> Are you ready?? Select your move! </p>
+			</div>
+		</div>
+		<div class = "row">
+			<div class = "col-xs-12">
+				<p> First to 5 Points Wins!</p>
+			</div>
+		</div>
+		<div class = "row buttonbar">
+			<div class = "col-xs-4">
+				<button type = "button" value = "rock" class = "btn btn-primary">Rock</button>
+			</div>
+			<div class = "col-xs-4">
+				<button type = "button" value = "paper" class = "btn btn-primary">Paper</button>
+			</div>
+			<div class = "col-xs-4">
+				<button type = "button" value = "scissors" class = "btn btn-primary">Scissors</button>
+			</div>
+		</div>
+
+
+	<div id = "scoreboard" class = "row">
+		<div class = "col-xs-4">Computer Score:</div>
+		<div id = "computerScore" class = "col-xs-1 scorecount">0</div>
+		<div class = "col-xs-3">Player Score:</div>
+		<div id = "playerScore" class = "col-xs-1 scorecount">0</div>
+		<div class = "col-xs-2">Draws:</div>
+		<div id = "draws" class = "col-xs-1 scorecount">0</div>
 	</div>
-	<div>
-		<span>Player Score:</span>
-		<span id = "playerScore">0</span>
-	</div>
-	<div>
-		<span>Draws:</span>
-		<span id = "draws">0</span>
-	</div>
-	<div>This game is played in the Console, so to see results, press F12 and go to the console Tab!</div>
+		<div class = "row">
+			<div class = "col-xs-12">
+				<h3> Play by Play! </h3>
+			</div>
+		</div>
+		<div class = "row">
+			<div id = "announcement-area-comp">
+				Ready!
+			</div>
+		</div>
+		<div class = "row">
+			<div id = "announcement-area-player">
+			</div>
+		</div>
+		<div class = "row">
+			<div id = "announcement-area-result">
+			</div>
+		</div>
+		<div class = "row">
+			<div id = "champ-announcement">
+			</div>
+		</div>
+		<div class = "row">
+			<div id = "reset-button">
+				<button type = "button" class = "btn btn-success">Reset</button>
+			</div>
+		</div>		
+
+
+
 
 
 </div>
+<style>
+#startScreen{
+	text-align: center;
+	margin-top: 10%;
+}
+.container{
+	position: relative;
+	width: 500px;
+}
+.buttonbar{
+	text-align: center;
+}
+#scoreboard{
+	margin-top: 20px;
+	text-align: center;
+	padding-left: 0px;
+}
+.scorecount{
+	text-align: left;
+	padding-left: 0;
+}
+ h3{
+ 	text-decoration: underline;
+ }
+ .btn-primary{
+ 	width: 80px;
+ }
+ #reset-button{
+ 	margin-top: 20px;
+ 	visibility: hidden;
+ }
 
+}
+
+</style>
 
 <script>
+
 	var computerTurn = '';
 	var playerTurn = '';
 	var computerCount = '';
 	var playerCount = '';
 	var drawCount = '';
+	const gameButtons = document.getElementsByClassName("btn-primary");
+	const annoAreaComp = document.getElementById("announcement-area-comp");
+	const annoAreaPlayer = document.getElementById("announcement-area-player");
+	const resultAnno = document.getElementById("announcement-area-result");
+	const champAnno = document.getElementById("champ-announcement")
 	
+
+	window.onload = playerSelection();
+
 	function computerPlay(){
 		let turn = Math.floor(Math.random()*9);
 		switch (true){
 			case turn <= 2:
 			computerTurn = "rock";
-			console.log("Computer Picked Rock!");
+			annoAreaComp.innerHTML = "Computer Picked Rock!";
 			break;
 			case turn <= 6:
 			computerTurn = "paper"
-			console.log("Computer Picked Paper!");
+			annoAreaComp.innerHTML = "Computer Picked Paper!";
 			break;
 			case turn <= 9:
 			computerTurn = "scissors"
-			console.log("Computer Picked Scissors!");
+			annoAreaComp.innerHTML = "Computer Picked Scissors!";
 			break;
 		}
 	}
 	function playerSelection(){
-		let val = document.getElementById("selectionBox").value;
-		playerTurn = val.toLowerCase();
-		console.log("You Picked " + val);
-	}
+		
+		for(let i = 0; i < gameButtons.length; i++){
+			 gameButtons[i].addEventListener("click",function(){
+			 	playerTurn = this.value;
+			 	let makeUpper = playerTurn.charAt(0).toUpperCase()+playerTurn.slice(1);
+			 	annoAreaPlayer.innerHTML = "You Picked " + makeUpper + "!"
+			 	computerPlay();
+			 	declareWinner();
+			 	championCheck();
+			 })}}
+
+		
+	
 	function declareWinner(){
 		switch(true){
 			case computerTurn == playerTurn:
-			console.log("It's a Draw!");
+			resultAnno.innerHTML = "It's a Draw!";
 			drawCount++;
 			document.getElementById("draws").innerHTML = drawCount;
 			break;
 			case computerTurn == "rock" && playerTurn == "scissors":
-			console.log("You lose!");
+			resultAnno.innerHTML = "You lose!";
 			computerCount++;
 			document.getElementById("computerScore").innerHTML = computerCount;
 			break;
 			case computerTurn == "rock" && playerTurn == "paper":
-			console.log("You win!");
+			resultAnno.innerHTML = "You win!";
 			playerCount++;
 			document.getElementById("playerScore").innerHTML = playerCount;
 			break;
 			case computerTurn == "paper" && playerTurn == "rock":
-			console.log("You lose!");
+			resultAnno.innerHTML = "You lose!";
 			computerCount++;
 			document.getElementById("computerScore").innerHTML = computerCount;
 			break;
 			case computerTurn == "paper" && playerTurn == "scissors":
-			console.log("You win!");
+			resultAnno.innerHTML = "You win!";
 			playerCount++;
 			document.getElementById("playerScore").innerHTML = playerCount;
 			break;
 			case computerTurn == "scissors" && playerTurn == "paper":
-			console.log("You lose!");
+			resultAnno.innerHTML = "You lose!";
 			computerCount++;
 			document.getElementById("computerScore").innerHTML = computerCount;
 			break;
 			case computerTurn == "scissors" && playerTurn == "rock":
-			console.log("You win!");
+			resultAnno.innerHTML = "You win!";
 			playerCount++;
 			document.getElementById("playerScore").innerHTML = playerCount;
 			break;
-		}
+		}}
+
+	function championCheck(){
+			switch(true){
+				case computerCount == 5:
+				champAnno.innerHTML = "Computer has 5 wins! Computer is the champion!";
+				resetDisplay();
+				break;
+
+				case playerCount == 5:
+				champAnno.innerHTML = "Player has 5 wins! Player is the champion!";
+				resetDisplay();
+				break;
+
+				default:
+				champAnno.innerHTML = "Select your next move!";
+
+			}
+
+			}
+			
+	function gameReset(){
+		document.getElementById("reset-button").addEventListener("click",function(){
+			location.reload();
+		})
 	}
+
+	function resetDisplay(){
+		document.getElementById("reset-button").style.visibility = "visible";
+		for(let i = 0; i < gameButtons.length; i++){
+			gameButtons[i].disabled = true;
+		}
+		gameReset(); 
+	}
+
+	
 </script>
